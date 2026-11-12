@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <title>Repository Oversight | Jman-Github</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a1422;
+      --panel: #101f32;
+      --panel2: #162941;
+      --text: #edf3f8;
+      --muted: #a8b8c8;
+      --line: #2b4056;
+      --accent: #8db8d8;
+      --green: #75c9a0;
+      --yellow: #e5c477;
+      --red: #e58b8b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #10243a 0, var(--bg) 340px);
+      color: var(--text);
+      font: 14px/1.55 "Segoe UI", system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+    a { color: inherit; }
+    .gov-strip {
+      min-height: 34px; background: #dce6ed; color: #15283a;
+      display: flex; align-items: center; justify-content: center;
+      padding: 6px 16px; font-size: 11px; letter-spacing: .04em;
+      text-align: center; font-weight: 700;
+    }
+    .wrap { width: min(1160px, calc(100% - 34px)); margin: 0 auto; padding: 28px 0 56px; }
+    .masthead {
+      display: flex; align-items: center; gap: 14px; padding-bottom: 20px;
+      border-bottom: 1px solid var(--line); margin-bottom: 25px;
+    }
+    .seal {
+      width: 54px; height: 54px; border: 2px solid #9bb6cb; border-radius: 50%;
+      display: grid; place-items: center; color: #c5d9e8; flex: 0 0 auto;
+      font-size: 23px; background: #152b42;
+    }
+    .agency { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #b6c8d8; font-weight: 800; }
+    .division { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    header { display: flex; justify-content: space-between; align-items: end; gap: 18px; flex-wrap: wrap; margin-bottom: 22px; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: .15em; font-size: 10px; font-weight: 800; }
+    h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.12; margin: 7px 0; letter-spacing: -.025em; font-weight: 650; }
+    .sub { color: var(--muted); margin: 0; }
+    .profile-link { color: #a9c9e2; text-decoration: none; font-weight: 700; }
+    .profile-link:hover { text-decoration: underline; }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    button, input, select {
+      background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+      border-radius: 5px; padding: 10px 13px; font: inherit;
+    }
+    button { cursor: pointer; font-weight: 700; }
+    button:hover { border-color: var(--accent); }
+    button.primary { background: #c7d9e7; color: #102338; border-color: #c7d9e7; }
+    button:disabled { opacity: .55; cursor: wait; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin: 20px 0; }
+    .stat, .panel, .card { background: rgba(16,31,50,.96); border: 1px solid var(--line); border-radius: 7px; }
+    .stat { padding: 15px 17px; border-top: 3px solid #607f9a; }
+    .stat strong { display: block; font-size: 26px; letter-spacing: -.025em; font-weight: 650; }
+    .stat span { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+    .panel { padding: 14px; margin-bottom: 20px; }
+    .filters { display: grid; grid-template-columns: 1fr 180px 180px; gap: 10px; }
+    input, select { width: 100%; min-width: 0; }
+    .status { color: var(--muted); font-size: 12px; margin: 11px 2px 0; }
+    .status.error { color: var(--red); }
+    .status.ok { color: var(--green); }
+    .section-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 23px 2px 11px; border-bottom: 1px solid var(--line); padding-bottom: 9px; }
+    .section-title h2 { margin: 0; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+    .section-title span { color: var(--muted); font-size: 11px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .card { padding: 17px; min-width: 0; transition: border-color .15s ease; }
+    .card:hover { border-color: #6686a2; }
+    .card-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+    .repo-name { font-size: 16px; font-weight: 750; overflow-wrap: anywhere; }
+    .repo-name a { text-decoration: none; }
+    .repo-name a:hover { color: var(--accent); }
+    .description { color: var(--muted); min-height: 42px; margin: 9px 0 14px; overflow-wrap: anywhere; }
+    .badge { white-space: nowrap; border: 1px solid #405970; padding: 3px 7px; font-size: 9px; font-weight: 800; letter-spacing: .08em; color: #c7d9e7; }
+    .badge.new { border-color: #39795e; color: #8ce0b8; }
+    .badge.updated { border-color: #806b37; color: #f0d38e; }
+    .meta { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: 11px; }
+    .topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 13px; }
+    .topic { background: #1b3048; color: #b9cddd; padding: 3px 7px; font-size: 10px; }
+    .empty { text-align: center; color: var(--muted); padding: 45px 12px; border: 1px dashed var(--line); border-radius: 7px; }
+    .notice { border-left: 3px solid #8db8d8; padding: 9px 12px; background: rgba(141,184,216,.07); color: #c0cfdb; font-size: 11px; margin-top: 18px; }
+    footer { margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; text-align: center; }
+    @media (max-width: 720px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .filters { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+      header { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="gov-strip">PUBLIC INFORMATION SYSTEM &nbsp;|&nbsp; INDEPENDENT REPOSITORY MONITORING</div>
+  <main class="wrap">
+    <div class="masthead">
+      <div class="seal" aria-hidden="true">⌖</div>
+      <div>
+        <div class="agency">Digital Systems Monitoring Office</div>
+        <div class="division">Repository Oversight Division · Public-source records</div>
+      </div>
+    </div>
+    <header>
+      <div>
+        <div class="eyebrow">Public repository intelligence · Record series  JG-01</div>
+        <h1>Repository Activity Register</h1>
+        <p class="sub">Public projects and repository activity from
+          <a class="profile-link" href="https://github.com/Jman-Github" target="_blank" rel="noopener">Jman-Github ↗</a>
+        </p>
+      </div>
+      <div class="toolbar">
+        <button id="refreshBtn" class="primary">↻ Update records</button>
+        <a class="profile-link" href="https://github.com/Jman-Github?tab=repositories" target="_blank" rel="noopener">View on GitHub ↗</a>
+      </div>
+    </header>
+
+    <section class="stats" aria-label="Repository statistics">
+      <div class="stat"><strong id="totalCount">—</strong><span>Public repositories</span></div>
+      <div class="stat"><strong id="starCount">—</strong><span>Total stars</span></div>
+      <div class="stat"><strong id="forkCount">—</strong><span>Total forks</span></div>
+      <div class="stat"><strong id="changedCount">—</strong><span>New / updated since last check</span></div>
+    </section>
+
+    <section class="panel">
+      <div class="filters">
+        <input id="searchInput" type="search" placeholder="Search projects, descriptions, or languages…">
+        <select id="languageFilter"><option value="">All languages</option></select>
+        <select id="sortFilter">
+          <option value="updated">Recently updated</option>
+          <option value="created">Recently created</option>
+          <option value="stars">Most stars</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+      <p id="status" class="status" role="status">Loading public repositories…</p>
+    </section>
+
+    <div class="section-title">
+      <h2>Repository records</h2>
+      <span id="resultCount">Waiting for GitHub…</span>
+    </div>
+    <section id="repoGrid" class="grid" aria-live="polite">
+      <div class="empty">Connecting to GitHub…</div>
+    </section>
+
+    <div class="notice">
+      SOURCE NOTICE: Records are retrieved from publicly available GitHub repository data. This is an independent fan-made dashboard and is not operated by, affiliated with, or endorsed by any government agency, GitHub, or Jman-Github.
+    </div>
+    <footer>
+      SYSTEM CLASSIFICATION: PUBLIC &nbsp;·&nbsp; SOURCE: GITHUB PUBLIC API &nbsp;·&nbsp; RECORD SERIES: JG-01
+      <br>Local change history is stored in this browser only. Repository activity timestamps do not describe every code change.
+    </footer>
+  </main>
+
+  <script>
+    const USERNAME = "Jman-Github";
+    const API_BASE = `https://api.github.com/users/${USERNAME}/repos`;
+    const STORAGE_KEY = `jman-tracker-${USERNAME}-snapshot`;
+
+    const grid = document.getElementById("repoGrid");
+    const statusEl = document.getElementById("status");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const searchInput = document.getElementById("searchInput");
+    const languageFilter = document.getElementById("languageFilter");
+    const sortFilter = document.getElementById("sortFilter");
+    let repositories = [];
+    let changes = {};
+
+    function setStatus(message, type = "") {
+      statusEl.textContent = message;
+      statusEl.className = `status ${type}`;
+    }
+
+    function dateLabel(value) {
+      if (!value) return "Unknown";
+      return new Date(value).toLocaleDateString(undefined, {
+        year: "numeric", month: "short", day: "numeric"
+      });
+    }
+
+    function escapeHTML(value = "") {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+    }
+
+    async function fetchRepositories() {
+      const all = [];
+      for (let page = 1; page <= 10; page++) {
+        const url = `${API_BASE}?type=owner&sort=updated&direction=desc&per_page=100&page=${page}`;
+        const response = await fetch(url, {
+          headers: { "Accept": "application/vnd.github+json" }
+        });
+
+        if (response.status === 404) throw new Error("The GitHub username could not be found.");
+        if (response.status === 403 || response.status === 429) {
+          throw new Error("GitHub's API rate limit was reached. Please wait a little and refresh.");
+        }
+        if (!response.ok) throw new Error(`GitHub returned an error (${response.status}).`);
+
+        const pageRepos = await response.json();
+        if (!Array.isArray(pageRepos)) throw new Error("GitHub returned an unexpected response.");
+        all.push(...pageRepos);
+        if (pageRepos.length < 100) break;
+      }
+      return all;
+    }
+
+    function compareWithPrevious(repos) {
+      let previous = {};
+      try {
+        previous = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      } catch (_) {
+        previous = {};
+      }
+
+      const next = {};
+      changes = {};
+      for (const repo of repos) {
+        next[repo.id] = repo.updated_at;
+        if (!previous[repo.id]) changes[repo.id] = "NEW";
+        else if (previous[repo.id] !== repo.updated_at) changes[repo.id] = "UPDATED";
+      }
+
+      // First visit establishes a baseline rather than labeling every repository as new.
+      if (Object.keys(previous).length === 0) changes = {};
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    }
+
+    function updateStats() {
+      document.getElementById("totalCount").textContent = repositories.length;
+      document.getElementById("starCount").textContent =
+        repositories.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+      document.getElementById("forkCount").textContent =
+        repositories.reduce((sum, repo) => sum + repo.forks_count, 0);
+      document.getElementById("changedCount").textContent = Object.keys(changes).length;
+    }
+
+    function render() {
+      const query = searchInput.value.trim().toLowerCase();
+      const language = languageFilter.value;
+      let shown = repositories.filter(repo => {
+        const searchable = [
+          repo.name, repo.description, repo.language, ...(repo.topics || [])
+        ].filter(Boolean).join(" ").toLowerCase();
+        return searchable.includes(query) && (!language || repo.language === language);
+      });
+
+      switch (sortFilter.value) {
+        case "created": shown.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); break;
+        case "stars": shown.sort((a, b) => b.stargazers_count - a.stargazers_count); break;
+        case "name": shown.sort((a, b) => a.name.localeCompare(b.name)); break;
+        default: shown.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+      }
+
+      document.getElementById("resultCount").textContent =
+        `${shown.length} of ${repositories.length} repositories`;
+
+      if (!shown.length) {
+        grid.innerHTML = '<div class="empty">No projects match your search.</div>';
+        return;
+      }
+
+      grid.innerHTML = shown.map(repo => {
+        const change = changes[repo.id];
+        const badge = change
+          ? `<span class="badge ${change.toLowerCase()}">${change === "NEW" ? "NEW PROJECT" : "UPDATED"}</span>`
+          : (repo.archived ? '<span class="badge">ARCHIVED</span>' : "");
+        const topics = (repo.topics || []).slice(0, 5)
+          .map(topic => `<span class="topic">${escapeHTML(topic)}</span>`).join("");
+        return `
+          <article class="card">
+            <div class="card-top">
+              <div class="repo-name">
+                <a href="${escapeHTML(repo.html_url)}" target="_blank" rel="noopener">${escapeHTML(repo.name)} ↗</a>
+              </div>
+              ${badge}
+            </div>
+            <p class="description">${escapeHTML(repo.description || "No description provided.")}</p>
+            <div class="meta">
+              <span>★ ${repo.stargazers_count}</span>
+              <span>⑂ ${repo.forks_count}</span>
+              <span>${escapeHTML(repo.language || "Language not specified")}</span>
+              <span>Updated ${dateLabel(repo.updated_at)}</span>
+            </div>
+            ${topics ? `<div class="topics">${topics}</div>` : ""}
+          </article>`;
+      }).join("");
+    }
+
+    async function loadProjects() {
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = "Updating…";
+      setStatus("Contacting GitHub's public API…");
+      try {
+        const fresh = await fetchRepositories();
+        repositories = fresh.filter(repo => repo.owner && repo.owner.login.toLowerCase() === USERNAME.toLowerCase());
+        compareWithPrevious(repositories);
+        const languages = [...new Set(repositories.map(repo => repo.language).filter(Boolean))]
+          .sort((a, b) => a.localeCompare(b));
+        languageFilter.innerHTML = '<option value="">All languages</option>' +
+          languages.map(lang => `<option value="${escapeHTML(lang)}">${escapeHTML(lang)}</option>`).join("");
+        updateStats();
+        render();
+        setStatus(`Successfully loaded ${repositories.length} public repositories. Last checked ${new Date().toLocaleTimeString()}.`, "ok");
+      } catch (error) {
+        setStatus(error.message || "Could not load repositories. Check your connection and try again.", "error");
+        if (!repositories.length) grid.innerHTML = '<div class="empty">Could not load projects. Check your connection and press Refresh projects.</div>';
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = "↻ Update records";
+      }
+    }
+
+    refreshBtn.addEventListener("click", loadProjects);
+    searchInput.addEventListener("input", render);
+    languageFilter.addEventListener("change", render);
+    sortFilter.addEventListener("change", render);
+
+    loadProjects();
+  </script>
+</body>
+</html>
